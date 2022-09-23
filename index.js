@@ -20,9 +20,9 @@ class Usuario{
     }
     getBookNames(){
         const bookNames = [];
-        for(const elem of this.libros){
+        this.libros.forEach((elem)=>{
             bookNames.push(elem.nombre);
-        }
+        })
         return bookNames
     }
 }
