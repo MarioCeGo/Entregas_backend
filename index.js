@@ -1,5 +1,11 @@
-//Desafio manejos de archivos - Mario Gonzalez
+//Desafio Servidor con express - Mario Gonzalez
 const fs = require('fs')
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 8080;
+
+
+
 class Contenedor {
     constructor(name) {
         this.name = `./${name}.txt`
@@ -31,7 +37,7 @@ class Contenedor {
     async getAll() {
         try {
             const data = await fs.promises.readFile(this.name, 'utf-8');
-            return (data.length > 0 ? JSON.parse(data) : []);
+            return await (data.length > 0 ? JSON.parse(data) : []);
         } catch (error) {
 
         }
@@ -47,30 +53,23 @@ class Contenedor {
         }
 
     }
+    async deleteAll(){
+        await fs.promises.writeFile(this.name, JSON.stringify([]));
+    }
 }
+
 const contenedor = new Contenedor('productos');
 
-// contenedor.save({
-//     title: 'Calculadora',
-//     price: 234.56,
-//     thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png',
-//   }
-// )
+app.get('/productos', async(req, res) => {
+    res.send(await contenedor.getAll());
+})
+app.get('/productoRandom', async (req, res) => {
+    const productos = await contenedor.getAll()
+    const prodRandom = Math.floor(Math.random() * (productos.length - 0 + 1) + 0);
+    res.send(productos[prodRandom]);
+})
 
-// contenedor.save({
-//     title: 'Globo Terráqueo',
-//     price: 345.67,
-//     thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png',
-//   }
-// )
+const server = app.listen(PORT, ()=> console.log('Server is running'));
+server.on('error', err => console.log('error'))
 
-// contenedor.save({
-//     title: 'Escuadra',
-//     price: 123.45,
-//     thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',
-// }
-// )
 
-// contenedor.deleteById(4)
-
-// contenedor.getById(1)
