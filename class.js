@@ -1,7 +1,11 @@
+import fs from 'fs'
+
 class Contenedor {
+
     constructor(name) {
         this.name = `./${name}.txt`
     }
+
     async save(prod) {
         try {
             try {
@@ -17,6 +21,7 @@ class Contenedor {
             console.log("No se pudo guardar correctamente")
         }
     }
+
     async getById(id) {
         try {
             const data = await this.getAll();
@@ -30,6 +35,7 @@ class Contenedor {
         } catch (error) {
         }
     }
+
     async editById(id, { title, price, thumbnail }){
         const data = await this.getAll();
         const prod = data.find(elem => elem.id === Number(id));
@@ -38,6 +44,7 @@ class Contenedor {
         prod.thumbnail = thumbnail;
         await fs.promises.writeFile(this.name, JSON.stringify(data));
     }
+
     async getAll() {
         try {
             const data = await fs.promises.readFile(this.name, 'utf-8');
@@ -45,6 +52,7 @@ class Contenedor {
         } catch (error) {
         }
     }
+
     async deleteById(id) {
         try {
             const data = await this.getAll();
@@ -55,12 +63,12 @@ class Contenedor {
             return ("No se pudo borrar correctamente");
         }
     }
+    
     async deleteAll() {
         await fs.promises.writeFile(this.name, JSON.stringify([]));
     }
 }
 
 const contenedor = new Contenedor('productos');
-contenedor.getAll()
 
 export default contenedor
