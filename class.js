@@ -1,28 +1,3 @@
-const fs = require('fs')
-const express = require('express');
-const {engine} = require('express-handlebars');
-
-const app = express();
-const PORT = process.env.PORT || 8080;
-const { Router } = express;
-
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
-app.set('main', './views');
-
-app.get('/', async (req, res)=>{
-    const datos = await contenedor.getAll();
-    res.render('productos_tabla', {datos});
-})
-
-app.get('/registrar', async(req, res)=>{
-    // const { title, price, thumbnail } = req.body;
-    // await contenedor.save({ title, price, thumbnail });
-    res.render('productos_form');
-})
-
-
-
 class Contenedor {
     constructor(name) {
         this.name = `./${name}.txt`
@@ -35,7 +10,7 @@ class Contenedor {
                 data.push(prod);
                 await fs.promises.writeFile(this.name, JSON.stringify(data));
             } catch (error) {
-                prod.id = 1;
+                prod.id = 1
                 await fs.promises.writeFile(this.name, JSON.stringify([prod]));
             }
         } catch (error) {
@@ -85,38 +60,7 @@ class Contenedor {
     }
 }
 
-const contenedor = new Contenedor('productos')
+const contenedor = new Contenedor('productos');
+contenedor.getAll()
 
-
-const apiRouter = Router();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-
-apiRouter.get('/productos', async (req, res) => {
-    res.send(await contenedor.getAll());
-})
-// apiRouter.get('/productos/:id', async (req, res) => {
-//     res.send(await contenedor.getById(Number(req.params.id)))
-// })
-apiRouter.post('/productos', async (req, res) => {
-    const { title, price, thumbnail } = req.body;
-    await contenedor.save({ title, price, thumbnail });
-    res.send({ saved: true });
-})
-// apiRouter.put('/productos/:id', async (req, res) => {
-//     const { title, price, thumbnail } = req.body;
-//     await contenedor.editById(req.params.id, { title, price, thumbnail });
-//     res.send({edited: true});
-// })
-// apiRouter.delete('/productos/:id', async (req, res) => {
-//     res.send(await contenedor.deleteById(Number(req.params.id)));
-// })
-// app.use(express.static(__dirname + '/public'));
-
-app.use('/API', apiRouter)
-app.listen(8080)
-
-// const server = app.listen(PORT, ()=> console.log('Server is running'));
-// server.on('error', err => console.log('error'))
-
-
+export default contenedor
