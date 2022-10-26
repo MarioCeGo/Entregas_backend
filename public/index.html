@@ -5,13 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 <body>
-    <form action="/API/productos" method="post">
+    <h2>Registrar productos</h2>
+
+    <form id="form-product">
         <input type="text" name="title" id="" placeholder="Nombre del producto">
         <input type="number" name="price" id="" placeholder="Precio del producto">
         <input type="text" name="thumbnail" id="" placeholder="URL imagen del producto">
         <button type="submit">Registrar</button>
     </form>
+
+    <div id="table-products"></div>
+
+    <h2>Chat</h2>
+
+    <form action="" id="form-chat">
+        <input type="email" name="email" id="" placeholder="example@example.com" required>
+        <input type="text" name="message" placeholder="Escriba algo...">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="chat"></div>
+
+    <script src="/index.js"></script>
+    <script src=""></script>
 </body>
 </html>

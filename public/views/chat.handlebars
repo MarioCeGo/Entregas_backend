@@ -1,0 +1,8 @@
+<hr>
+    {{#if data.length}}
+    {{#each data}}
+    <p> <span style="color: blue; font-weight:bold;">{{this.email}}</span>  <span style="color: brown;">[{{this.date}}]</span> <span style="font-family: italic; color: green;">:{{this.message}}</span></p>
+    {{/each}}
+    {{else}}
+    <p>No mensajes</p>
+    {{/if}}

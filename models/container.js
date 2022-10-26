@@ -1,6 +1,6 @@
-import fs from 'fs'
+const fs = require('fs')
 
-class Contenedor {
+class Container {
 
     constructor(name) {
         this.name = `./${name}.txt`
@@ -29,14 +29,13 @@ class Contenedor {
                 return data.find(elem => elem.id === id);
             } else {
                 return { error: 'producto no encontrado' }
-
             }
 
         } catch (error) {
         }
     }
 
-    async editById(id, { title, price, thumbnail }){
+    async editById(id, { title, price, thumbnail }) {
         const data = await this.getAll();
         const prod = data.find(elem => elem.id === Number(id));
         prod.title = title;
@@ -63,12 +62,12 @@ class Contenedor {
             return ("No se pudo borrar correctamente");
         }
     }
-    
+
     async deleteAll() {
         await fs.promises.writeFile(this.name, JSON.stringify([]));
     }
 }
 
-const contenedor = new Contenedor('productos');
+const container = new Container('productos');
 
-export default contenedor
+module.exports = container;

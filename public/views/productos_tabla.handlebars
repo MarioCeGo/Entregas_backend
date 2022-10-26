@@ -1,13 +1,12 @@
 <h3>Productos registrados</h3>
-<a href="/registrar"><button>Registrar productos</button></a>
 <table>
     <tr>
         <th>Nombre</th>
         <th>Precio</th>
         <th>Foto</th>
     </tr>
-    {{#if datos.length}}
-    {{#each datos}}
+    {{#if data.length}}
+    {{#each data}}
     <tr>
         <td>{{this.title}}</td>
         <td>{{this.price}}</td>
