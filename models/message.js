@@ -1,15 +1,3 @@
-// class Message {
-//     constructor(){
-//         this.listMessage = [];
-//     }
-//     getAll(){
-//         return this.listMessage;
-//     }
-//     setListMessage(message){
-//         this.listMessage.push(message);
-//     }
-// }
-
 const fs = require('fs')
 
 class Message {
