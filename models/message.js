@@ -36,7 +36,7 @@ class Message{
             console.log(msgNormalize)
             return await (data.length > 0 ? msgNormalize : []);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 }
