@@ -1,1 +1,32 @@
-[{"email":"asd@asd","message":"aaa","date":"25/10/2022, 22:02:33","id":1},{"email":"q@q","message":"qqq","date":"25/10/2022, 22:10:40","id":2}]
+[{ 
+    author: {
+        id: 'q@q', 
+        nombre: 'jose', 
+        apellido: 'perez', 
+        edad: '35', 
+        alias: 'j35',
+        avatar: 'www.foto.com'
+    },
+    text: 'mensaje del usuario'
+},{ 
+    author: {
+        id: 'q@q', 
+        nombre: 'jose', 
+        apellido: 'perez', 
+        edad: '35', 
+        alias: 'j35',
+        avatar: 'www.foto.com'
+    },
+    text: 'mensaje del usuariossss'
+},{ 
+    author: {
+        id: 'q@qqqq', 
+        nombre: 'luis', 
+        apellido: 'perez', 
+        edad: '32', 
+        alias: '935',
+        avatar: 'www.foto.com'
+    },
+    text: 'mensaje del usuario'
+}
+]

@@ -1,21 +1,19 @@
 const fs = require('fs')
+const normalizr = require('normalizr');
 
-class Message {
-
-    constructor(name) {
-        this.name = `./${name}.txt`
+class Message{
+    constructor(){
+        this.name = "mensajes.txt";
     }
 
-    async save(msg) {
+    async save(author, msg) {
         try {
             try {
-                const data = await this.getAll();
-                data.length === 0 ? msg.id = 1 : msg.id = data[data.length - 1].id + 1;
-                data.push(msg);
+                const data = await fs.promises.readFile(this.name, 'utf-8');
+                data.push(new Message(author, msg));
                 await fs.promises.writeFile(this.name, JSON.stringify(data));
             } catch (error) {
-                msg.id = 1
-                await fs.promises.writeFile(this.name, JSON.stringify([msg]));
+                await fs.promises.writeFile(this.name, JSON.stringify(new Message(author, msg)));
             }
         } catch (error) {
             console.log("No se pudo guardar correctamente")
@@ -24,12 +22,28 @@ class Message {
 
     async getAll() {
         try {
+
             const data = await fs.promises.readFile(this.name, 'utf-8');
-            return await (data.length > 0 ? JSON.parse(data) : []);
+            const normalize = normalizr.normalize;
+            const author = new normalizr.schema.Entity("author");
+            const msg = new normalizr.schema.Entity("msg", {
+                author: author
+            });
+            const holding = new normalizr.schema.Entity("holding", {
+                msg: msg
+            });
+            const msgNormalize = normalize(JSON.parse(data), holding);
+            console.log(msgNormalize)
+            return await (data.length > 0 ? msgNormalize : []);
         } catch (error) {
+            console.log(error);
         }
     }
 }
-const messages = new Message('mensajes');
+
+const messages = new Message();
+messages.getAll();
+
+
 
 module.exports = messages;
