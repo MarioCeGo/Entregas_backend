@@ -42,7 +42,7 @@ formChat.onsubmit = (e) => {
     formValue.date = date.toLocaleString();
     // console.log(formValue)
     sendMessage(formValue);
-    // formChat.reset();
+    formChat.reset();
 }
 
 socket.on("products", data => {

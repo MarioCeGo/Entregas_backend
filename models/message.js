@@ -12,21 +12,18 @@ class Message{
     async save(msg) {
         try {
             try {
-                const data = await fs.promises.readFile(this.name, 'utf-8');
-                console.log(data)
+                const data = await this.getAll();
                 const author = new Author(msg.email, msg.name, msg.lastName, msg.age, msg.alias, msg.avatar);
                 const message = new Msg(author, msg.message);
-                console.log()
                 data.push(message);
-                console.log("data")
                 await fs.promises.writeFile(this.name, JSON.stringify(data));
             } catch (error) {
-                console.log(error)
+                console.log(error);
                 const author = new Author(msg.email, msg.name, msg.lastName, msg.age, msg.alias, msg.avatar);
                 await fs.promises.writeFile(this.name, JSON.stringify([new Msg(author, msg.message)]));
             }
         } catch (error) {
-            console.log("No se pudo guardar correctamente")
+            console.log("No se pudo guardar correctamente");
         }
     }
 
@@ -40,25 +37,22 @@ class Message{
     }
     async getAllNormailze(){
         try {
-            const data = await fs.promises.readFile(this.name, 'utf-8');
+            const data =  await this.getAll();
             const normalize = normalizr.normalize;
-            const author = new normalizr.schema.Entity("author");
-            const text = new normalizr.schema.Entity("text");
-            const msg = new normalizr.schema.Entity("msg", {
-                author: author,
-                text: text
+            const author = new normalizr.schema.Entity("user");
+            const text = new normalizr.schema.Entity("text", {
+                author: author
             });
-            const holding = new normalizr.schema.Entity("holding", {
-                msg: msg
-            });
-
-            const msgNormalize = normalize(JSON.parse(data), holding);
-            console.log(data.length)
-            console.log(JSON.stringify(msgNormalize).length)
+            const holiding = new normalizr.schema.Entity("holding",{
+                msg: [text]
+            })
+            const msgNormalize = normalize(data, holiding);
+            console.log(JSON.stringify(data).length);
+            console.log(JSON.stringify(msgNormalize).length);
             console.log(util.inspect(msgNormalize, false, 12, true));
             return await (data.length > 0 ? msgNormalize : []);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 }
