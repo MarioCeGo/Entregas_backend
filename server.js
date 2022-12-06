@@ -41,3 +41,38 @@ app.get('/api/products/test', async (req, res) => {
     }
     res.send(prods);
 });
+
+app.get('/', async (req, res) => {
+    const datos = await container.getAll();
+    res.render('productos_tabla', { datos });
+});
+
+io.on('connection', (socket) => {
+    getAllProducts(socket);
+    getAllMessages(socket);
+    socket.on("new product", product => {
+        setProduct(product);
+    });
+    socket.on("new message", msg => {
+        setMessage(msg);
+    })
+    console.log('Usuario conectado');
+})
+
+const getAllProducts = async (socket) => {
+    const listProducts = await container.getAll();
+    socket.emit("products", listProducts);
+}
+const getAllMessages = async (socket) => {
+    const listMessages = await messages.getAll();
+    socket.emit("messages", listMessages);
+}
+
+const setProduct = async (prod) => {
+    await container.save(prod);
+    io.sockets.emit("products", await container.getAll());
+}
+const setMessage = async (msg) => {
+    await messages.save(msg);
+    io.sockets.emit("messages", await messages.getAll())
+}

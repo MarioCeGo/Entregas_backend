@@ -1,0 +1,32 @@
+[{ 
+    author: {
+        id: 'q@q', 
+        nombre: 'jose', 
+        apellido: 'perez', 
+        edad: '35', 
+        alias: 'j35',
+        avatar: 'www.foto.com'
+    },
+    text: 'mensaje del usuario'
+},{ 
+    author: {
+        id: 'q@q', 
+        nombre: 'jose', 
+        apellido: 'perez', 
+        edad: '35', 
+        alias: 'j35',
+        avatar: 'www.foto.com'
+    },
+    text: 'mensaje del usuariossss'
+},{ 
+    author: {
+        id: 'q@qqqq', 
+        nombre: 'luis', 
+        apellido: 'perez', 
+        edad: '32', 
+        alias: '935',
+        avatar: 'www.foto.com'
+    },
+    text: 'mensaje del usuario'
+}
+]

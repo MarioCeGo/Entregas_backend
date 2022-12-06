@@ -40,15 +40,14 @@ formChat.onsubmit = (e) => {
     const formValue = Object.fromEntries(formData);
     const date = new Date();
     formValue.date = date.toLocaleString();
-    console.log(formValue)
+    // console.log(formValue)
     sendMessage(formValue);
-    formChat.reset();
+    // formChat.reset();
 }
 
 socket.on("products", data => {
     renderProducts(data);
 })
 socket.on("messages", data => {
-    console.log(data);
     renderMessages(data);
 })
