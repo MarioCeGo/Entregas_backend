@@ -4,7 +4,16 @@ const container = require('./models/container.js');
 const messages = require('./models/message.js')
 const { Server: IOServer } = require('socket.io');
 const { Server: HttpServer } = require('http');
-const {faker} = require('@faker-js/faker');
+const { faker } = require('@faker-js/faker');
+
+/* --- Tarea LOGIN --- */
+
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const mongoOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+
+/* --- Tarea LOGIN --- */
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -21,9 +30,41 @@ app.use('/API', apiRouter);
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('main', './views');
-httpServer.listen(PORT, ()=>{
+httpServer.listen(PORT, () => {
     console.log(`Running in ${PORT}`)
 });
+
+/* --- Tarea LOGIN --- */
+
+// app.use(cookieParser);
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://admin:admin@cluster0.9dmwbiu.mongodb.net/?retryWrites=true&w=majority",
+        mongoOptions,
+        ttl: 60,
+        dbName: 'login',
+        collectionName: 'session'
+    }),
+    secret: 'claveSecreta',
+    resave: false,
+    saveUninitialized: false
+}));
+app.get('/session/login/:username', async (req, res) => {
+    if (req.session.username) {
+        res.send("Ya estas logeado")
+    } else {
+        const { username } = req.params;
+        req.session.username = username;
+        res.send(`Bienvenido ${username}`)
+    }
+
+})
+app.get('/session/logout/', async (req, res) => {
+    req.session.destroy()
+    res.send("Hasta luego")
+})
+
+/* --- Tarea LOGIN --- */
 
 app.get('/api/products/test', async (req, res) => {
     const prods = [];
@@ -50,6 +91,7 @@ app.get('/', async (req, res) => {
 io.on('connection', (socket) => {
     getAllProducts(socket);
     getAllMessages(socket);
+    logIn(socket)
     socket.on("new product", product => {
         setProduct(product);
     });
@@ -66,6 +108,11 @@ const getAllProducts = async (socket) => {
 const getAllMessages = async (socket) => {
     const listMessages = await messages.getAll();
     socket.emit("messages", listMessages);
+}
+
+const logIn = async (socket) => {
+    const data = ""
+    socket.emit("login", data)
 }
 
 const setProduct = async (prod) => {

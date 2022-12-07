@@ -4,6 +4,7 @@ const formProducts = document.getElementById("form-product");
 const formChat = document.getElementById("form-chat");
 const containerProducts = document.getElementById("table-products");
 const containerChat = document.getElementById("chat");
+const containerLogin = document.getElementById("logIn");
 
 const sendProduct = (prod) => {
     socket.emit("new product", prod);
@@ -21,6 +22,13 @@ const renderProducts = async (data) => {
 }
 const renderMessages = async (data) => {
     const templateChat = await fetch('/views/chat.handlebars');
+    const template = await templateChat.text();
+    const templateCompiled = Handlebars.compile(template);
+    const html = templateCompiled({ data });
+    containerChat.innerHTML = html;
+}
+const renderLogin = async (data) => {
+    const templateChat = await fetch('/views/login.handlebars');
     const template = await templateChat.text();
     const templateCompiled = Handlebars.compile(template);
     const html = templateCompiled({ data });
@@ -44,10 +52,23 @@ formChat.onsubmit = (e) => {
     sendMessage(formValue);
     formChat.reset();
 }
+// formLogin.onsubmit = (e) => {
+//     e.preventDefault();
+//     const formData = new FormData(formChat);
+//     const formValue = Object.fromEntries(formData);
+//     const date = new Date();
+//     formValue.date = date.toLocaleString();
+//     // console.log(formValue)
+//     sendMessage(formValue);
+//     formChat.reset();
+// }
 
 socket.on("products", data => {
     renderProducts(data);
 })
 socket.on("messages", data => {
     renderMessages(data);
+})
+socket.on("login", data => {
+    renderLogin(data);
 })

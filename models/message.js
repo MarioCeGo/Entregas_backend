@@ -58,7 +58,7 @@ class Message{
 }
 
 const messages = new Message();
-messages.getAllNormailze();
+// messages.getAllNormailze();
 
 
 

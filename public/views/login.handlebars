@@ -1,0 +1,9 @@
+{{#if data}}
+<p>hola</p>
+{{else}}
+<h2>Login</h2>
+<form action="/session/login">
+    <input type="text" name="username" id="username" placeholder="Ingrese un nombre">
+    <button type="submit">Iniciar sesion</button>
+</form>
+{{/if}}
